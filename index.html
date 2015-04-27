@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MH4U damage calculator</title>
+<script src="mhp3rd_calc.js"></script>
+<link href="calc.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+</head>
+<body onload="initialize();">
+<p class="title">MH4U damage calculator</p>
+<div class="form1" onchange="calcDamage();">
+	<p class="header">Weapon</p>
+	<p>Weapon attack</p>
+	<input class="in1" type="number" id="watk" value="200" step="5" onchange="watk=Number(this.value);updateRaw();">
+
+	<p>Elemental power</p>
+	<input class="in1" type="number" id="eatk" value="20" onchange="eatk=Number(this.value);updateEle();">
+
+	<p>Sharpness</p>
+	<select class="in1" id="sharpness" onchange="tempsharp=this.value.split(';');sharp=Number(tempsharp[0]);esharp=Number(tempsharp[1]);updateRaw();updateEle();">
+		<option value="0.5;0.25" style="background:red;">Red</option>
+		<option value="0.75;0.5" style="background:orange;">Orange</option>
+		<option value="1;0.75" style="background:yellow;">Yellow</option>
+		<option value="1.05;1" style="background:green;">Green</option>
+		<option value="1.2;1.0625" style="background:blue;">Blue</option>
+		<option value="1.32;1.125" style="background:white;">White</option>
+		<option selected value="1.44;1.2" style="background:purple;">Purple</option>
+	</select>
+
+	<p>Affinity</p>
+	<input class="in2" type="number" id="affinity" value="0" step="5" onchange="affinity=Number(this.value);updateRaw();">%
+
+	<p class="header">Skills</p>
+
+	<p>Attack Up</p>
+	<select class="in1" id="au" onchange="au=Number(this.value);updateRaw();">
+		<option value="0">None</option>
+		<option value="10">Small</option>
+		<option value="15">Medium</option>
+		<option value="20">Large</option>
+		<option value="25">Xtra Large</option>
+	</select>
+
+	<p>Critical Eye</p>
+	<select class="in1" id="expert" onchange="expert=Number(this.value);updateRaw();">
+		<option value="0">None</option>
+		<option value="10">+1</option>
+		<option value="15">+2</option>
+		<option value="20">+3</option>
+		<option value="25">+4</option>
+		<option value="30">God</option>
+	</select>
+
+	<p>Weakness Exploit</p>
+	<input class="in1" type="checkbox" id="stinger" onchange="stinger=this.checked;updateRaw();">
+
+	<p>Powercharm and Powertalon</p>
+	<select class="in1" id="charm" onchange="charm=Number(this.value);updateRaw();">
+		<option value="0">None</option>
+		<option value="6">Powercharm</option>
+		<option value="9">Powertalon</option>
+		<option value="15">Both</option>
+	</select>
+	<p>Specific Elemental Attack Up</p>
+	<select class="in1" id="seau" onchange="tempseau=this.value.split(';');seau=Number(tempseau[0]);seauf=Number(tempseau[1]);updateEle();">
+		<option value="1;0">None</option>
+		<option value="1.05;4">+1</option>
+		<option value="1.1;6">+2</option>
+		<option value="1.15;9">+3</option>
+	</select>
+	<p>Elemental Attack Up</p>
+	<select class="in1" id="eau" onchange="eau=Number(this.value);updateEle();">
+		<option value="1">None</option>
+		<option value="1.1">Elemental Attack Up</option>
+	</select>
+</div>
+<div class="form1" onchange="calcDamage();">
+	<p class="header">Hitzone</p>
+
+	<p>Raw hitzone</p>
+	<input class="in2" type="number" id="hitzone" value="100" onchange="hitzone=Number(this.value)/100;updateRaw();">%
+
+	<p>Elemental hitzone</p>
+	<input class="in2" type="number" id="ehitzone" value="100" onchange="ehitzone=Number(this.value)/100;updateEle();">%
+
+	<p class="header">Defense</p>
+
+	<p>Defense modifier</p>
+	<input class="in1" type="number" id="defense" value="1.00" step="0.05" onchange="defense=Number(this.value);updateDef();">
+
+	<p>Rage modifier</p>
+	<input class="in1" type="number" id="rage" value="1.00" step="0.05" onchange="rage=Number(this.value);updateDef();">
+
+	<p>Status modifier</p>
+	<input class="in1" type="number" id="stat" value="1.00" step="0.05" onchange="stat=Number(this.value);updateDef();">
+</div>
+<div class="form1" onchange="calcDamage();">
+	<p class="header">Hit modifiers</p>
+
+	<p>Attack motion</p>
+	<input class="in2" type="number" id="motion" value="100" onchange="motion=Number(this.value/100);updateRaw();">%
+	<p>Elemental attack motion</p>
+	<input class="in2" type="number" id="emotion" value="100" onchange="emotion=Number(this.value/100);updateEle();">%
+
+	<p>Connect modifier</p>
+	<input class="in1" type="number" id="connect" value="1.00" step="0.05" onchange="connect=Number(this.value);updateRaw();">
+	<p>Special modifier 1</p>
+	<input class="in1" type="number" id="special1" value="1.00" step="0.05" onchange="special1=Number(this.value);updateRaw();">
+	<p>Special modifier 2</p>
+	<input class="in1" type="number" id="special2" value="1.00" step="0.05" onchange="special2=Number(this.value);updateRaw();">
+	<p>Elemental special modifier</p>
+	<input class="in1" type="number" id="especial" value="1.00" step="0.05" onchange="especial=Number(this.value);updateEle();">
+</div>
+<div class="form1">
+	<p class="header">Damage</p>
+	<p>Raw damage</p>
+	<input readonly class="in1" type="number" id="rawdamage">
+	<p>Elemental damage</p>
+	<input readonly class="in1" type="number" id="eledamage">
+	<p>Damage modifier</p>
+	<input readonly class="in1" type="number" id="damagemod">
+
+	<p class="header">Result</p>
+	<p>Damage done</p>
+	<input readonly class="in1" type="number" id="damagedone">
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.weapons {
+	position: absolute;
+	display: none;
+}
+p#title {
+	font-size: 200%;
+	font-weight: bold;
+}
