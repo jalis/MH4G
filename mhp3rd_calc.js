@@ -88,7 +88,7 @@ function calcDamage() { //Calculate overall damage done and update the related H
 function updateRaw() { //Calculate and update variables related to RAW damage.
 	var crit;
 	var stinger_special;
-	if(stinger && hitzone>=45) { //Stinger activates if raw hitzone is above 45%, adding 15% affinity and +5% damage modifier.
+	if(stinger && hitzone>=0.45) { //Stinger activates if raw hitzone is above 45%, adding 15% affinity and +5% damage modifier.
 		crit=(15+expert+affinity)/100;
 		stinger_special=1.05;
 	}
